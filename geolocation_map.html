@@ -30,25 +30,22 @@
     <script>
       let map;
       function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
+        map = new google.maps.Map(document.getElementById("map"), {
         // UIC Center
         center: { lat: 41.8696, lng: -87.6496 },
         zoom: 15,
         });
-        const contentString = "School";
-        const infowindow = new google.maps.InfoWindow({
-          content: contentString,
-        });
-        const marker = new google.maps.Marker({
-          position: { lat: 41.8696, lng: -87.6496 },
+        
+        navigator.geolocation.getCurrentPosition((location) => {
+          let gLat = location.coords.latitude;
+          let gLng = location.coords.longitude;
+
+          map.setCenter({ lat: gLat, lng: gLng });
+          
+          new google.maps.Marker({
+          position: { lat: gLat, lng: gLng },
           map,
-          title: "UIC",
-        });
-        marker.addListener("click", () => {
-          infowindow.open({
-          anchor: marker,
-          map,
-          shouldFocus: false,
+          title: "Here",
           });
         });
       }
