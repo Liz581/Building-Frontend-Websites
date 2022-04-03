@@ -1,16 +1,118 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+      height: 100%;
+      }
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- AIzaSyDa4dMSOASs_iLQnhrPoQ8EZgj2Im_pZ7o -->
+    <div id="map"></div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa4dMSOASs_iLQnhrPoQ8EZgj2Im_pZ7o&callback=initMap&v=weekly"
+      async
+    ></script>
+    <script>
+      let url = "https://data.cityofchicago.org/resource/4ijn-s7e5.json?zip=60607&$LIMIT=10";
+      let map;
+      
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 41.8696, lng: -87.6496 },
+        zoom: 15,
+        });
 
-<body>
-  Hello world
-  <script src="script.js"></script>
-</body>
+        fetch (url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            json.forEach (item => {
+              console.log(json)
+              const inspectionDate = item.inspection_date.split("T");
+              const contentString = 
+                '<div id="content">' +
+                '<div id="siteNotice">' +
+                "</div>" +
+                '<h1 id="firstHeading" class="firstHeading">' + item.dba_name + '</h1>' +
+                '<div id="bodyContent">' +
+                "<p><b>Facility Type: </b>" + item.facility_type + "</p>" +
+                "<p><b>Address: </b>" + item.address + "</p>" +
+                "<p><b>Inspect: </b>" + inspectionDate[0] + "</p>" +
+                "<p><b>Results: </b>" + item.results + "</p>" +
+                "</div>" +
+                "</div>";
 
+              const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+              });
+              
+              const marker = new google.maps.Marker({
+                position: { lat: parseFloat(item.latitude), lng: parseFloat(item.longitude) },
+                map,
+                title: item.dba_name,
+              });
+    
+              marker.addListener("click", () => {
+                infowindow.open({
+                  anchor: marker,
+                  map,
+                  shouldFocus: false,
+                });
+              });
+            });
+          })
+        
+        // inspection_data.forEach (item => {
+        //   const inspectionDate = item.inspection_date.split("T");
+        //   const contentString =
+        //     '<div id="content">' +
+        //     '<div id="siteNotice">' +
+        //     "</div>" +
+        //     '<h1 id="firstHeading" class="firstHeading">' + item.dba_name + '</h1>' +
+        //     '<div id="bodyContent">' +
+        //     "<p><b>Facility Type: </b>" + item.facility_type + "</p>" +
+        //     "<p><b>Address: </b>" + item.address + "</p>" +
+        //     "<p><b>Inspect: </b>" + inspectionDate[0] + "</p>" +
+        //     "<p><b>Results: </b>" + item.results + "</p>" +
+        //     "</div>" +
+        //     "</div>";
+
+        //   const infowindow = new google.maps.InfoWindow({
+        //     content: contentString,
+        //   });
+          
+        //   const marker = new google.maps.Marker({
+        //     position: { lat: parseFloat(item.latitude), lng: parseFloat(item.longitude) },
+        //     map,
+        //     title: item.dba_name,
+        //   });
+
+        //   marker.addListener("click", () => {
+        //     infowindow.open({
+        //       anchor: marker,
+        //       map,
+        //       shouldFocus: false,
+        //     });
+        //   });
+        // })
+      }
+    </script>
+  </body>
 </html>
