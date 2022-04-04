@@ -1,16 +1,64 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <button type="button" id="police">POLICE</button>
+    <button type="button" id="fire">FIRE</button>
+    <!--<script src="script.js"></script>-->
+    <script>
+      let url = "https://data.cityofchicago.org/resource/xzkq-xp2w.json";
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-  Hello world
-  <script src="script.js"></script>
-</body>
-
+      document.querySelector("button#police")
+      .addEventListener("click", (evt) => {
+        let btnText = evt.target.innerText;
+        console.log(btnText);
+      
+        fetch (url)
+          .then ( (response) => {
+            return response.json();
+          })
+          .then ( (json) => {
+            console.log(json)
+            json.forEach (item => {
+              if (item.department == "POLICE") {
+                const contentString = 
+                "NAME: " + item.name +
+                " JOB TITLE: " + item.job_titles +
+                " DEPARTMENT: " + item.department;
+      
+                console.log(contentString)
+              }
+            });
+          })
+      })
+      
+      document.querySelector("button#fire")
+      .addEventListener("click", (evt) => {
+        let btnText = evt.target.innerText;
+        console.log(btnText);
+        fetch (url)
+          .then ( (response) => {
+            return response.json();
+          })
+          .then ( (json) => {
+            console.log(json)
+            json.forEach (item => {
+              if (item.department == "FIRE") {
+                const contentString = 
+                "NAME: " + item.name +
+                " JOB TITLE: " + item.job_titles +
+                " DEPARTMENT: " + item.department;
+      
+                console.log(contentString)
+              }
+            });
+          })
+      })
+    </script>
+  </body>
 </html>
