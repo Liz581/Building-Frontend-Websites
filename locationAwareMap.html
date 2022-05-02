@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- jsFiddle will insert css and js -->
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+      height: 50%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="text"></div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtFUQRC47gllgyG0hkq4TxJ1dVJ--450g&callback=initMap&v=weekly&channel=2"
+      async
+    ></script>
+    <script>
+      let map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+        // UIC Center
+        center: { lat: 41.8696, lng: -87.6496 },
+        zoom: 15,
+        });
+        
+        navigator.geolocation.getCurrentPosition((location) => {
+          let gLat = location.coords.latitude;
+          let gLng = location.coords.longitude;
+
+          map.setCenter({ lat: gLat, lng: gLng });
+
+          const newDate = new Date();
+          let list = document.querySelector('#text');
+          let update = document.createTextNode("Lat: "+ gLat + " Long: "+ gLng + " " + newDate);
+          list.appendChild(update);
+          console.log(list);
+        });
+        
+        navigator.geolocation.watchPosition((location) => {
+          let gLat = location.coords.latitude;
+          let gLng = location.coords.longitude;
+
+          map.setCenter({ lat: gLat, lng: gLng });
+
+          const newDate = new Date();
+          let list = document.querySelector('#text');
+          let update = document.createTextNode("Lat: "+ gLat + " Long: "+ gLng + " " + newDate);
+          list.prepend(update);
+
+          const mark = new google.maps.Circle ({
+            strokeColor: "FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "FF0000",
+            fillOpacity: 0.35,
+            map,
+            center: { lat: gLat, lng: gLng },
+            radius: 10,
+          });
+          
+          console.log(list);
+        });
+      }
+    </script>
+  </body>
+</html>
