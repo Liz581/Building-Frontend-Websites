@@ -5,12 +5,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  Hello world
-  <script src="script.js"></script>
-</body>
+  <script>
+    let url = "https://api.nasa.gov/planetary/apod?api_key=66fYe4BxFMgeUMIkouRXgbh1Kg3wFnFZggaMvox2"
 
+    fetch (url)
+      .then ( (response) => {
+        return response.json();
+      })
+      .then ( (json) => {
+        let head = document.createElement("h1");
+        let item1 = document.createTextNode(json.title);
+        head.appendChild(item1);
+        document.body.appendChild(head);
+    
+        let p1 = document.createElement("p");
+        let item2 = document.createTextNode(json.date);
+        p1.appendChild(item2);
+        document.body.appendChild(p1);
+        
+        let p2 = document.createElement("p");
+        let item3 = document.createTextNode(json.explanation);
+        p2.appendChild(item3);
+        document.body.appendChild(p2);
+    
+        var img = document.createElement("img");
+        img.src =json.hdurl;
+        document.body.appendChild(img);
+        
+      })
+  </script>
+</body>  
 </html>
