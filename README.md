@@ -5,3 +5,5 @@ It has a range of examples of HTML/CSS and Javascript:
 - Video and Audio Recording
 - Data fetching/displaying
 - Importing Bootstrap framework
+- Displaying pictures
+- Forms
